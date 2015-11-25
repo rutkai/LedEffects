@@ -1,5 +1,6 @@
 #define NUM_LEDS 8
 
+#include <EEPROM.h>
 #include <FastLED.h>
 #include "color.h"
 #include "easing.h"
@@ -16,23 +17,34 @@ char inputString[100];           // a string to hold incoming data
 int inputPointer = 0;
 boolean stringComplete = false;  // whether the string is complete
 
-int mode = 0;
-int speed = 100;
-int params[3];
+uint8_t mode = 0;
+uint8_t speed = 100;
+uint8_t params[3];
 
-int readInt(int);
+uint8_t readInt(uint8_t);
 
 void setup() {
   Serial.begin(9600);
   FastLED.addLeds<WS2812B, PIN, GRB>(leds, NUM_LEDS);
   FastLED.setBrightness(255);
-  for (int i = 0; i <= sizeof(params); ++i) {
-    params[i] = 0;
-  }
-  mode = 0;
+  loadDefaults();
 
   Serial.println("LedEffects has been started!");
   Serial.println("For the available commands please enter help.");
+}
+
+void loadDefaults() {
+  if (sizeof(params) + 1 < EEPROM.length()) {
+    mode = EEPROM.read(0);
+    for (uint8_t i = 0; i <= sizeof(params); ++i) {
+      params[i] = EEPROM.read(i + 1);
+    }
+  } else {
+    mode = 0;
+    for (uint8_t i = 0; i <= sizeof(params); ++i) {
+      params[i] = 0;
+    }
+  }
 }
 
 void loop() {
@@ -138,14 +150,23 @@ void changeMode() {
     Serial.println("  rainbow <deltahue, default: 10> <starthue, default: 0> <speed, default: 100>");
     Serial.println("  juggle <speed, default: 100>");
   }
+  writeDefaults();
 }
 
-int readInt(int def) {
+uint8_t readInt(uint8_t def) {
   char* str = strtok(0, " ");
-  int val = def;
   if (str != 0) {
-    val = atoi(str);
+    return atoi(str);
   }
-  return val;
+  return def;
+}
+
+void writeDefaults() {
+  if (sizeof(params) + 1 < EEPROM.length()) {
+    EEPROM.write(0, mode);
+    for (uint8_t i = 0; i <= sizeof(params); ++i) {
+      EEPROM.write(i + 1, params[i]);
+    }
+  }
 }
 
