@@ -4,7 +4,7 @@
 class Easing {
 	
 public:
-	static void ease(CRGB leds[]) {
+	static void ease(CRGB leds[], uint8_t led_number) {
     static uint8_t easeOutVal = 0;
     static uint8_t easeInVal  = 0;
     static uint8_t lerpVal    = 0;
@@ -12,10 +12,10 @@ public:
     easeOutVal = ease8InOutQuad(easeInVal);
     easeInVal++;
   
-    lerpVal = lerp8by8(0, NUM_LEDS, easeOutVal);
+    lerpVal = lerp8by8(0, led_number, easeOutVal);
   
     leds[lerpVal] = CRGB::Red;
-    fadeToBlackBy(leds, NUM_LEDS, 16);
+    fadeToBlackBy(leds, led_number, 16);
 	}
 };
 

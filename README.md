@@ -1,7 +1,7 @@
 LedEffects
 ==========
 
-This project is an Arduino project on top of FastLED library. With the project you can change effects on-the-fly using serial communication (Arduino serial communicator or Putty).
+This project is an Arduino project on top of FastLED library. With the project you can change effects on-the-fly using serial communication (Arduino serial communicator or Putty). The number of leds can be dynamically updated, no need to recompile the source.
 
 Integrated effects (so far):
 

@@ -10,9 +10,9 @@ public:
     hue = h;
     delta = d;
   }
-  static void rainbow(CRGB leds[]) {
+  static void rainbow(CRGB leds[], uint8_t led_number) {
     hue++;
-    fill_rainbow(leds, NUM_LEDS, hue, delta);
+    fill_rainbow(leds, led_number, hue, delta);
   }
 };
 

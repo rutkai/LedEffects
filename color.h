@@ -3,8 +3,8 @@
 
 class Color {
 public:
-	static void colorRGB(CRGB leds[], int r, int g, int b) {
-  	fill_solid(leds, NUM_LEDS, CRGB(r, g, b));
+	static void colorRGB(CRGB leds[], uint8_t led_number, int r, int g, int b) {
+  	fill_solid(leds, led_number, CRGB(r, g, b));
 	}
 };
 
